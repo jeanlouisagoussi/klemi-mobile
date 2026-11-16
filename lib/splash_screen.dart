@@ -1,21 +1,22 @@
 import 'dart:io';
 import 'dart:async';
 
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
+import 'package:cupertino_ui/cupertino_ui.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:klemi/Configuration/app_theme.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver {
+class _SplashScreenState extends State<SplashScreen>
+    with WidgetsBindingObserver {
   Timer? _connectivityTimer;
   bool _lienOuvert = false;
 
@@ -66,7 +67,9 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
       }
     } on SocketException {
       EasyLoading.dismiss();
-      EasyLoading.showError("Pas de connexion Internet. Vérifiez votre réseau.");
+      EasyLoading.showError(
+        "Pas de connexion Internet. Vérifiez votre réseau.",
+      );
       _surveillerConnexion();
     } catch (e) {
       EasyLoading.dismiss();
@@ -77,10 +80,14 @@ class _SplashScreenState extends State<SplashScreen> with WidgetsBindingObserver
   void _surveillerConnexion() {
     if (_lienOuvert) return;
 
-    _connectivityTimer = Timer.periodic(const Duration(seconds: 5), (timer) async {
+    _connectivityTimer = Timer.periodic(const Duration(seconds: 5), (
+      timer,
+    ) async {
       try {
         final result = await InternetAddress.lookup('google.com');
-        if (result.isNotEmpty && result[0].rawAddress.isNotEmpty && !_lienOuvert) {
+        if (result.isNotEmpty &&
+            result[0].rawAddress.isNotEmpty &&
+            !_lienOuvert) {
           EasyLoading.dismiss();
           EasyLoading.showSuccess("Connexion rétablie !");
           await Future.delayed(const Duration(seconds: 1));
